@@ -1,0 +1,194 @@
+openapi: 3.0.3
+info:
+  title: Todo-Listen-Verwaltung
+  description: "Eine REST-API zur Verwaltung von Todo-Listen."
+  contact:
+    email: l.michaluk@basecom.de
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: http://127.0.0.1:5000/
+tags:
+- name: Listenverwaltung
+
+paths:
+  /todo-list:
+    post:
+      operationId: createTodoList
+      summary: Fügt eine neue Todo-Liste hinzu.
+      responses:
+        '201':
+          description: Erfolgreiches Anlegen.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoListResponse'
+        '406':
+          description: Fehlerhafte Daten im Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoListResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+
+  /todo-list/{list_id}:
+    parameters:
+      - name: list_id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getTodoListEntries
+      summary: Liefert alle Einträge einer Todo-Liste zurück.
+      responses:
+        '200':
+          description: Liste aller Einträge der gegebenen Liste.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoEntry'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      operationId: deleteTodoList
+      summary: Löscht eine komplette Todo-Liste mit allen Einträgen.
+      responses:
+        '204':
+          description: Erfolgreiches Löschen.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      operationId: createTodoEntry
+      summary: Fügt einen Eintrag zu einer bestehenden Todo-Liste hinzu.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoEntryInput'
+      responses:
+        '201':
+          description: Erfolgreiches Anlegen.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoEntry'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /entry/{entry_id}:
+    parameters:
+      - name: entry_id
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: updateTodoEntry
+      summary: Aktualisiert einen bestehenden Eintrag.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoEntryInput'
+      responses:
+        '200':
+          description: Erfolgreiche Aktualisierung.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoEntry'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '406':
+          description: Fehlerhafte Daten im Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoEntry'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      operationId: deleteTodoEntry
+      summary: Löscht einen einzelnen Eintrag einer Todo-Liste.
+      responses:
+        '204':
+          description: Erfolgreiches Löschen.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  schemas:
+    TodoListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    TodoEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    TodoEntryInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+  responses:
+    NotFoundError:
+      description: Die angeforderte ID wurde nicht gefunden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
+    ServerError:
+      description: Interner Server-Fehler.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
