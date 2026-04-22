@@ -43,6 +43,20 @@ paths:
               properties:
                 name:
                   type: string
+    get:
+      operationId: getTodoLists
+      summary: Liefert alle Todo-Listen zurück.
+      responses:
+        '200':
+          description: Liste aller Todo-Listen.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoListResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
 
   /todo-list/{list_id}:
     parameters:
