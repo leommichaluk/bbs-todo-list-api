@@ -200,9 +200,11 @@ Die API wird in einem Docker-Container betrieben. Das hält die Umgebung sauber 
 #### Systemzeit setzen
 
 Falls die Uhrzeit nicht stimmt (wichtig für `apt` und Zertifikate):
+Format: 'YYYY-MM-DD HH:MM:SS' Zum Beispiel: '2026-06-17 12:58:00'
+
 
 ```bash
-sudo date --set='20XX-XX-XX XX:XX:XX'
+sudo date --set='20XX-XX-XX XX:XX:XX' 
 ```
 
 Datum und Uhrzeit durch den aktuellen Wert ersetzen.
