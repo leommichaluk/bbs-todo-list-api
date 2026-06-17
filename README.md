@@ -72,7 +72,8 @@ Der Server läuft anschließend unter `http://127.0.0.1:5000`.
 
 Zur API existiert ein passendes Web-Frontend, das auf [Vercel](https://vercel.com) gehostet wird:
 
-**→ [bbs-todo-list-frontend.vercel.app](https://bbs-todo-list-frontend.vercel.app)**
+**→ Live: [bbs-todo-list-frontend.vercel.app](https://bbs-todo-list-frontend.vercel.app)**
+**→ Quellcode: [github.com/leommichaluk/bbs-todo-list-frontend](https://github.com/leommichaluk/bbs-todo-list-frontend)** (Nuxt / Vue)
 
 Über die Oberfläche lassen sich Listen und Einträge anlegen, bearbeiten und löschen — alle Aktionen laufen über die hier beschriebenen Endpunkte. So kann die Funktionstüchtigkeit der API bequem im Browser getestet werden, ohne selbst HTTP-Anfragen (z. B. per `curl`) absetzen zu müssen.
 
