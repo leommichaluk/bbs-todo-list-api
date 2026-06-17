@@ -1,11 +1,12 @@
 # Nutzen eines offiziellen Python-Images.
 FROM python:3.12
 
-# Installiere die Python-Abhängigkeiten
-RUN pip install flask
-
 # Arbeitsverzeichnis im Container wechseln 
 WORKDIR /app
+
+# Abhängigkeiten zuerst kopieren und installieren (nutzt Docker-Layer-Cache)
+COPY requirements.txt /app
+RUN pip install -r requirements.txt
 
 # Kopiere lokale Datei in den Container
 COPY app.py /app
